@@ -1,0 +1,14 @@
+|maq_emb
+Clk => CurrentState~1.DATAIN
+Reset => CurrentState~3.DATAIN
+X => Selector0.IN2
+X => Selector1.IN2
+X => Selector2.IN2
+X => Selector0.IN1
+X => Selector1.IN1
+X => Selector2.IN1
+S_0 << S_0.DB_MAX_OUTPUT_PORT_TYPE
+S_1 << S_1.DB_MAX_OUTPUT_PORT_TYPE
+S_2 << S_2.DB_MAX_OUTPUT_PORT_TYPE
+
+

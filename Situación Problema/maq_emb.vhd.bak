@@ -1,0 +1,60 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity maq_emb is
+    port (Clk, Reset, X: in STD_LOGIC;
+			S_0, S_1, S_2 : out STD_LOGIC); -- S_0: posición, S_1: lleno, S_2: sellado
+end maq_emb;
+
+architecture behavioral of maq_emb is
+
+type State is (S0, S1, S2);
+signal CurrentState, NextState: State;
+
+begin
+	registros: process (Clk, Reset)
+	begin
+		if Reset = '1' then
+			CurrentState <= S0;
+		elsif rising_edge(Clk) then
+			CurrentState <= NextState;
+		end if;
+end process registros;
+
+	combinational: process (CurrentState, X)
+	begin
+		NextState <= CurrentState;
+		S_0 <= '0';
+		S_1 <= '0';
+		S_2 <= '0';
+		case CurrentState is
+			when S0 =>
+				S_0 <= '1';
+				S_1 <= '0';
+				S_2 <= '0';			
+				if X >= '1' then
+					NextState <= S1;
+				else
+					NextState <= S0;
+				end if;
+			when S1 =>
+				S_1 <= '1';
+				S_0 <= '0';
+				S_2 <= '0';
+				if X >= '1' then
+					NextState <= S2;
+				 else
+						NextState <= S1;
+				end if;
+			when S2 =>
+				S_2 <= '1';
+				S_1 <= '0';
+				S_0 <= '0';
+				if X  >= '1' then
+					NextState <= S0;
+            else
+            	NextState <= S2;
+				end if;
+		end case;
+	end process combinational;
+end architecture behavioral;
